@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE nmaprun>
+<?xml-stylesheet href="file:///usr/local/bin/../share/nmap/nmap.xsl" type="text/xsl"?>
+<nmaprun scanner="nmap" args="/usr/local/bin/nmap -p 20,21,22,53,80,443,8080 -sS -oX working/scan.xml 192.168.0.*" start="1427650234" startstr="Sun Mar 29 18:30:34 2015" version="6.47" xmloutputversion="1.04">
+<scaninfo type="syn" protocol="tcp" numservices="7" services="20-22,53,80,443,8080"/>
+<verbose level="0"/>
+<debugging level="0"/>
+<host starttime="1427650234" endtime="1427650242"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.0.1" addrtype="ipv4"/>
+<address addr="00:00:00:00:00:01" addrtype="mac" vendor="Netgear,"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="20"><state state="closed" reason="reset" reason_ttl="64"/><service name="ftp-data" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="open" reason="syn-ack" reason_ttl="64"/><service name="http" method="table" conf="3"/></port>
+</ports>
+<times srtt="3127" rttvar="2582" to="100000"/>
+</host>
+<host starttime="1427650234" endtime="1427650241"><status state="down" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.0.2" addrtype="ipv4"/>
+<address addr="00:00:00:00:00:02" addrtype="mac" vendor="Azurewave Technologies"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="20"><state state="closed" reason="reset" reason_ttl="64"/><service name="ftp-data" method="table" conf="3"/></port>
+<port protocol="tcp" portid="21"><state state="closed" reason="reset" reason_ttl="64"/><service name="ftp" method="table" conf="3"/></port>
+</ports>
+<times srtt="45121" rttvar="64661" to="303765"/>
+</host>
+<host starttime="1427650234" endtime="1427650241"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.0.3" addrtype="ipv4"/>
+<address addr="00:00:00:00:00:03" addrtype="mac" vendor="Asustek Computer"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="20"><state state="closed" reason="reset" reason_ttl="64"/><service name="ftp-data" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="closed" reason="reset" reason_ttl="64"/><service name="http" method="table" conf="3"/></port>
+</ports>
+<times srtt="207355" rttvar="92040" to="575515"/>
+</host>
+<host starttime="1427650234" endtime="1427650241"><status state="up" reason="arp-response" reason_ttl="0"/>
+<address addr="192.168.0.4" addrtype="ipv4"/>
+<address addr="00:00:00:00:00:04" addrtype="mac" vendor="LG Electronics"/>
+<hostnames>
+</hostnames>
+<ports><port protocol="tcp" portid="20"><state state="closed" reason="reset" reason_ttl="64"/><service name="ftp-data" method="table" conf="3"/></port>
+<port protocol="tcp" portid="80"><state state="closed" reason="reset" reason_ttl="64"/><service name="http" method="table" conf="3"/></port>
+</ports>
+<times srtt="46266" rttvar="65023" to="306358"/>
+</host>
+<runstats><finished time="1427650242" timestr="Sun Mar 29 18:30:42 2015" elapsed="7.94" summary="Nmap done at Sun Mar 29 18:30:42 2015; 256 IP addresses (8 hosts up) scanned in 7.94 seconds" exit="success"/><hosts up="8" down="248" total="256"/>
+</runstats>
+</nmaprun>
