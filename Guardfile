@@ -10,6 +10,7 @@ guard :bundler do
 end
 
 guard :rspec, cmd: "bundle exec rspec --color" do
+  clearing :on
   require "guard/rspec/dsl"
   dsl = Guard::RSpec::Dsl.new(self)
 

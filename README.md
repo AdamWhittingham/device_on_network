@@ -14,8 +14,20 @@ After that is set, simply:
 or
 - Run `gem install device-on-network`
 
+Server
+------
+You probably don't want to use the gem and have to run your whole app as sudo, so there is a server/JSON version to let you isolate the high privileges.
+From the root of the project, run
+`sudo rackup`
+
+### Querying
+`get /find?mac=00:00:00:00:00:00` will return a JSON object.
+#### Response JSON keys
+- `found` => 'true' or 'false' depending on if that mac was found
+- `mac` => the mac you requested a lookup of
+- `host` => If a device was found, this field will describe it
+
 ToDo
 ----
-- Add more metrics for detecting devices
+- Add more methods for detecting devices
 - Try to find a graceful way of falling back if not running as root
-- Add a simple web/unix socket server so it can be run as root isolated from the rest of your application

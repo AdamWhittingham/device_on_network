@@ -13,12 +13,10 @@ describe DeviceOnNetwork do
       FileUtils.copy 'spec/fixtures/scan.xml', 'working/'
     end
 
-    after do
-      FileUtils.rm 'working/scan.xml'
-    end
-
-    it 'returns the host for the given mac' do
-      expect(subject.find_mac(present_device).length).to eq 1
+    it 'returns a host for the given mac' do
+      matched = subject.find_mac present_device
+      expect(matched.length).to eq 1
+      expect(matched.first.class).to eq Nmap::Host
     end
 
     it 'returns an empty array for devices with down interfaces' do
