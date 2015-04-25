@@ -3,9 +3,15 @@ require 'json'
 require_relative 'device_on_network'
 
 class DeviceOnNetwork::Server < Sinatra::Base
+  set :bind, '0.0.0.0'
+
   def initialize
     super
     @devices = DeviceOnNetwork.new
+  end
+
+  get '/' do
+    "#{Time.now}: DeviceOnNetwork is running"
   end
 
   get '/find' do
