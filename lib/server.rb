@@ -11,7 +11,7 @@ class DeviceOnNetwork::Server < Sinatra::Base
   end
 
   get '/' do
-    "#{Time.now}: DeviceOnNetwork is running"
+    "#{Time.now.utc}: DeviceOnNetwork is running"
   end
 
   get '/find' do
