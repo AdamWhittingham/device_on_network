@@ -5,10 +5,14 @@ class DeviceOnNetwork
   MIN_SECONDS_BETWEEN_SCANS = 60
   SCAN_OUTPUT = 'working/scan.xml'
 
+  def initialize targets = '192.168.0.*'
+    @network_targets = targets
+  end
+
   def find_mac mac_address
     scan.hosts
-      .select{|host| host.status.state == :up}
       .select{|host| host.mac == mac_address.upcase}
+      .select{|host| host.status.state == :up}
   end
 
   private
@@ -20,10 +24,11 @@ class DeviceOnNetwork
 
   def perform_scan
     Nmap::Program.scan do |nmap|
-      nmap.targets = '192.168.0.*'
+      nmap.targets = @network_targets
       nmap.ports = [20,21,22,53,80,443]
-      nmap.syn_scan = true
+      nmap.syn_scan = false
       nmap.xml = SCAN_OUTPUT
+      nmap.verbose = false
     end
   end
 

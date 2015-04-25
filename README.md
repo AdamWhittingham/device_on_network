@@ -1,8 +1,7 @@
 DeviceOnNetwork
 ===============
 
-This small sharp gem with a catchy name does something unexpected:
-it tells you if it can see a device on your network.
+A simple library & API server for finding if a MAC address is active on your network.
 
 Installation
 ------------
@@ -14,8 +13,20 @@ After that is set, simply:
 or
 - Run `gem install device-on-network`
 
-Server / Container / MicroService
----------------------------------
+Usage as a lib or gem
+---------------------
+Initialise a new instance for your given target IP range:
+```ruby
+
+require 'device_on_network'
+
+network = DeviceOnNetwork.new '192.168.0.*'
+devices = network.find_mac '00:00:00:00:00:00'
+
+```
+
+Usage as a Server
+-----------------
 You probably don't want to use the gem and have to run your whole app as sudo, so there is a JSON API server to let you isolate the high privileges. Optionally, and to make this even easier, a Dockerfile is provided so the root permissions are limited entirely inside the container.
 
 ### Sinatra API server
@@ -31,7 +42,8 @@ From the root of the project, run
 - `mac` => the mac you requested a lookup of
 - `host` => If a device was found, this field will describe it
 
-### Docker
+Usage as a Docker container
+---------------------------
 A container and compose file are provided for running up the container.
 Once you have docker installed, you should be able to run the container with:
 `docker-compose build && docker-compose up`
@@ -42,3 +54,4 @@ ToDo
 ----
 - Add more methods for detecting devices
 - Find a graceful way of falling back if not running as root
+- Find a more elegant and meaningful way of testing everything

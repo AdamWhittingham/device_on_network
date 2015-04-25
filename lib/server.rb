@@ -7,7 +7,8 @@ class DeviceOnNetwork::Server < Sinatra::Base
 
   def initialize
     super
-    @devices = DeviceOnNetwork.new
+    network_targets = ENV['NETWORK_TARGETS'] || '192.168.0.*'
+    @devices = DeviceOnNetwork.new network_targets
   end
 
   get '/' do
