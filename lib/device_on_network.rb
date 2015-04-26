@@ -10,12 +10,22 @@ class DeviceOnNetwork
   end
 
   def find_mac mac_address
+    mac = tidy_mac(mac_address)
     scan.hosts
-      .select{|host| host.mac == mac_address.upcase}
+      .select{|host| host.mac == mac}
       .select{|host| host.status.state == :up}
   end
 
   private
+
+  def tidy_mac mac
+    mac.upcase
+      .gsub(':','')
+      .chars
+      .each_slice(2)
+      .map(&:join)
+      .join(':')
+  end
 
   def scan
     perform_scan if scan_needed
@@ -23,12 +33,11 @@ class DeviceOnNetwork
   end
 
   def perform_scan
-    Nmap::Program.scan do |nmap|
-      nmap.targets = @network_targets
-      nmap.ports = [20,21,22,53,80,443]
-      nmap.syn_scan = false
-      nmap.xml = SCAN_OUTPUT
-      nmap.verbose = false
+    Nmap::Program.scan do |scan|
+      scan.targets = @network_targets
+      scan.ports = [20,21,22,53,80,443]
+      scan.syn_scan = true
+      scan.xml = SCAN_OUTPUT
     end
   end
 

@@ -27,6 +27,10 @@ describe DeviceOnNetwork do
       expect(subject.find_mac missing_device).to eq []
     end
 
+    it 'still works for malformed mac addresses' do
+      matched = subject.find_mac '000000:000001'
+      expect(matched.length).to eq 1
+    end
   end
 
 end
