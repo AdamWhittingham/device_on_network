@@ -14,16 +14,18 @@ You probably don't want to have to run your whole app as sudo, so this project p
 Usage
 -----
 ### Start her up!
-`sudo bundle exec bin/device_on_network`
+`sudo bin/device_on_network`
 
 ### Routes
+
 `GET /` => Return a timestamp and message so you know the server is up
+
 `GET /find?mac=00:00:00:00:00:00` => Returns a JSON object describing the results of scanning for the given MAC
 
 ### Find Response JSON keys
 - `found` => 'true' or 'false' depending on if that mac was found
 - `mac` => the mac you requested a lookup of
-- `host` => If a device was found, this field will describe it
+- `timestamp` => The UTC timestamp of the last scan
 
 
 Rambling notes on what I learned building this

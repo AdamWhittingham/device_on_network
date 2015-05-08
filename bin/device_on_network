@@ -1,6 +1,12 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'bundler'
+Bundler.require
+
 require 'sinatra'
 require 'json'
-require_relative 'device_on_network'
+require_relative '../lib/device_on_network'
 
 $scan_file      = ENV['SCAN_OUTPUT']     || '/var/tmp/scanner.xml'
 $scan_frequency = ENV['SCAN_FREQUENCY']  || 30
