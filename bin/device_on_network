@@ -8,9 +8,11 @@ require 'sinatra'
 require 'json'
 require_relative '../lib/device_on_network'
 
-$scan_file      = ENV['SCAN_OUTPUT']     || '/var/tmp/scanner.xml'
-$scan_frequency = ENV['SCAN_FREQUENCY']  || 30
-network_target  = ENV['NETWORK_TARGETS'] || '192.168.0.*'
+set :port, ENV['DON_PORT'] || 12001
+
+$scan_file      = ENV['DON_SCAN_OUTPUT']     || '/var/tmp/scanner.xml'
+$scan_frequency = ENV['DON_SCAN_FREQUENCY']  || 30
+network_target  = ENV['DON_NETWORK_TARGETS'] || '192.168.0.*'
 
 $parser  = DeviceOnNetwork::Parser.new($scan_file)
 $scanner = DeviceOnNetwork::Scanner.new($scan_file, network_target)
@@ -19,7 +21,7 @@ puts "Starting Scanner"
 puts " - Searching: #{network_target}"
 puts " - Scan every: #{$scan_frequency} seconds"
 puts
-puts "Set the NETWORK_TARGETS or SCAN_FREQUENCY environment variables to change these settings"
+puts "Set the DON_NETWORK_TARGETS or DON_SCAN_FREQUENCY environment variables to change these settings"
 
 Thread.start do
   loop do
