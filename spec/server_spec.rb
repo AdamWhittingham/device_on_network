@@ -4,6 +4,12 @@ require production_code
 describe DeviceOnNetwork::Server do
   let(:mac){ '00:00:00:00:00:01' }
 
+  before do
+    allow(DeviceOnNetwork::Scanner)
+      .to receive(:new)
+      .and_return double(:scanner)
+  end
+
   describe 'GET /find?mac=<mac>' do
 
     context 'there is not matching host' do
@@ -41,7 +47,7 @@ describe DeviceOnNetwork::Server do
   end
 
   def stub_device_lookup_to_return ret
-    allow(DeviceOnNetwork)
+    allow(DeviceOnNetwork::Parser)
       .to receive_message_chain(:new, :find_mac)
       .and_return ret
   end

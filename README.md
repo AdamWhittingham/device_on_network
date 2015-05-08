@@ -1,57 +1,38 @@
 DeviceOnNetwork
 ===============
 
-A simple library & API server for finding if a MAC address is active on your network.
+A rough and ready API server on top of NMAP for searching for MAC addresses on your network.
+This is a learning project; trying different solutions to some tricky problems. Obviously, don't use this in production!
 
 Installation
 ------------
 DeviceOnNetwork requires [nmap](http://nmap.org/) to be installed.
 It also needs to be run in a process with root privileges to detect MAC addresses.
 
-After that is set, simply:
-- Add `gem 'device-on-network` to your `Gemfile`
-or
-- Run `gem install device-on-network`
+You probably don't want to have to run your whole app as sudo, so this project provides a JSON API server to let you isolate the high privileges.
 
-Usage as a lib or gem
----------------------
-Initialise a new instance for your given target IP range:
-```ruby
+Usage
+-----
+### Start her up!
+`sudo bundle exec bin/device_on_network`
 
-require 'device_on_network'
-
-network = DeviceOnNetwork.new '192.168.0.*'
-devices = network.find_mac '00:00:00:00:00:00'
-
-```
-
-Usage as a Server
------------------
-You probably don't want to use the gem and have to run your whole app as sudo, so there is a JSON API server to let you isolate the high privileges. Optionally, and to make this even easier, a Dockerfile is provided so the root permissions are limited entirely inside the container.
-
-### Sinatra API server
-From the root of the project, run
-`sudo rackup`
-
-#### Routes
+### Routes
 `GET /` => Return a timestamp and message so you know the server is up
 `GET /find?mac=00:00:00:00:00:00` => Returns a JSON object describing the results of scanning for the given MAC
 
-#### Find Response JSON keys
+### Find Response JSON keys
 - `found` => 'true' or 'false' depending on if that mac was found
 - `mac` => the mac you requested a lookup of
 - `host` => If a device was found, this field will describe it
 
-Usage as a Docker container
----------------------------
-A container and compose file are provided for running up the container.
-Once you have docker installed, you should be able to run the container with:
-`docker-compose build && docker-compose up`
-After this, the container will be listening on port `8000`. You can change this port by editing the left-hand portion of the PORTS section in [docker-compose.yml](docker-compose.yml)
 
+Rambling notes on what I learned building this
+----------------------------------------------
+This project began as an experiment in both testing a tool heavily dependant on a system call, and of how Docker containers could be used to quarantine high-privilege requirements (NMAP needs to run as root to figure out MAC addresses).
+Here are a few notes of what I've learned, please get in touch if you have some thoughts to add.
 
-ToDo
-----
-- Add more methods for detecting devices
-- Find a graceful way of falling back if not running as root
-- Find a more elegant and meaningful way of testing everything
+- Docker does a lot to isolate your container from 'real' networks. This is usually wonderful, but even in its most permissive modes, it does prevent access at Layer 2 for things. As I understand it, this prevents the app from running inside a container and being able to resolve MACs. If I'm wrong or there is a work around I just didn't find, please let me know!
+- TDDing (or testing this at all) became expectionally difficult for a few reasons:
+  1. I used the excellent `Program::Nmap` gem to isolate, parse and adapt NAMP searches into nice objects. As this gem returns its own data types, this left me with no clear option between stubbing the library (risking stubbing the wrong interfaces), closely integrating with the library and stubbing the system calls to namp (which I chose) and abandoning testing (which would be lazy and teach me nothing). Lesson: using a gem which returns its own data types means you need to absorb it's juicy knowledge to be able to test your app well, so it may not always be the awesome win you expected.
+  2. Having to split the app in two in order to split the privileges added some interesting problems. Should the scanner just be a shell script calling namp and run as root? Could I automatically integration test the app without causing havoc to gem installations? (current answer is 'no')
+  3. Testing a small script which spins up a thread without mocking/instrumenting `Thread` was very tough and not very useful. Ultimately, I ditched the tests as they were fragile mirrors of the production code. An integration test on a simulated network is too heavy handed for this, but may be sensible if this were a real production job. Refactoring the scanner into a ScannerLooper class is probably a good idea too.

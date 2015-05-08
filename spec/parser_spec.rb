@@ -1,17 +1,14 @@
 require 'spec_helper'
 require production_code
 
-describe DeviceOnNetwork do
+describe DeviceOnNetwork::Parser do
 
   describe '#find_mac' do
     let(:present_device){ '00:00:00:00:00:01' }
     let(:down_device   ){ '00:00:00:00:00:02' }
     let(:missing_device){ 'FF:FF:FF:FF:FF:FF' }
 
-    before do
-      double_cmd('nmap')
-      FileUtils.copy 'spec/fixtures/scan.xml', 'working/'
-    end
+    subject{ described_class.new 'spec/fixtures/scan.xml'}
 
     it 'returns a host for the given mac' do
       matched = subject.find_mac present_device
