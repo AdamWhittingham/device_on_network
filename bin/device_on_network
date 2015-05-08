@@ -8,7 +8,9 @@ require 'sinatra'
 require 'json'
 require_relative '../lib/device_on_network'
 
-set :port, ENV['DON_PORT'] || 12001
+set :port,    ENV['DON_PORT'] || 12001
+set :logging, ENV['DON_LOG_REQUESTS'] || false
+set :bind,    ENV['DON_BIND'] || '0.0.0.0'
 
 $scan_file      = ENV['DON_SCAN_OUTPUT']     || '/var/tmp/scanner.xml'
 $scan_frequency = ENV['DON_SCAN_FREQUENCY']  || 30
