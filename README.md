@@ -20,9 +20,15 @@ Usage
 
 `GET /` => Return a timestamp and message so you know the server is up
 
-`GET /find?mac=00:00:00:00:00:00` => Returns a JSON object describing the results of scanning for the given MAC
+#### Active
+  `GET /active` => Return an object describing the active (up) MAC addresses
+##### Response JSON keys
+- `macs` => An array of strings representing all of the active macs
+- `timestamp` => The UTC timestamp of the last scan
 
-### Find Response JSON keys
+#### Find
+`GET /find?mac=00:00:00:00:00:00` => Returns a JSON object describing the results of scanning for the given MAC
+##### Response JSON keys
 - `found` => 'true' or 'false' depending on if that mac was found
 - `mac` => the mac you requested a lookup of
 - `timestamp` => The UTC timestamp of the last scan
