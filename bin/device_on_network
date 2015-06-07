@@ -46,3 +46,9 @@ get '/find' do
   timestamp = File.mtime($scan_file).utc
   JSON.generate({mac: mac, found: found, timestamp: timestamp})
 end
+
+get '/active' do
+  hosts = $parser.active_macs
+  timestamp = File.mtime($scan_file).utc
+  JSON.generate({ macs: hosts, timestamp: timestamp })
+end

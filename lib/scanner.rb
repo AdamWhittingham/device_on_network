@@ -9,7 +9,7 @@ module DeviceOnNetwork
     end
 
     def scan
-      temp_file = Tempfile.new('DeviceOnNetwork') 
+      temp_file = Tempfile.new('DeviceOnNetwork')
       Nmap::Program.scan do |scan|
         scan.targets = @network_targets
         scan.ports = [20,21,22,53,80,443]

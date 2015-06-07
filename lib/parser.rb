@@ -7,6 +7,14 @@ module DeviceOnNetwork
       @scan_file = scan_file
     end
 
+    def active_macs
+      scan = Nmap::XML.new(@scan_file)
+      scan.hosts
+        .select{|host| host.status.state == :up}
+        .map(&:mac)
+        .compact
+    end
+
     def find_mac mac_address
       mac = tidy_mac(mac_address)
       scan = Nmap::XML.new(@scan_file)
