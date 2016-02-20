@@ -23,7 +23,7 @@ module DeviceOnNetwork
     puts " - Scan every: #{$scan_period} seconds"
 
     get '/' do
-      return '{}' unless @@parser
+      return '{}' unless File.exists?($scan_file)
       active_macs = @@parser.active_macs
       timestamp = File.mtime($scan_file).utc
       JSON.generate({ active_mac_addresses: active_macs, scanned_at: timestamp })
