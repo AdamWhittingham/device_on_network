@@ -17,24 +17,13 @@ describe DeviceOnNetwork::Parser do
     end
   end
 
-  describe '#find_mac' do
-    it 'returns a host for the given mac' do
-      matched = subject.find_mac present_device
-      expect(matched.length).to eq 1
-      expect(matched.first.class).to eq Nmap::Host
+  describe '#tidy_mac' do
+    it 'converts malformed MAC addresses to correctly formatted ones' do
+      expect( subject.tidy_mac '123456789012' ).to eq '12:34:56:78:90:12'
     end
 
-    it 'returns an empty array for devices with down interfaces' do
-      expect(subject.find_mac down_device).to eq []
-    end
-
-    it 'returns an empty array for missing devices' do
-      expect(subject.find_mac missing_device).to eq []
-    end
-
-    it 'still works for malformed mac addresses' do
-      matched = subject.find_mac '000000:000001'
-      expect(matched.length).to eq 1
+    it 'converts all letters to uppercase' do
+      expect( subject.tidy_mac 'ABCDabcdAbCd' ).to eq 'AB:CD:AB:CD:AB:CD'
     end
   end
 

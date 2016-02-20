@@ -15,16 +15,6 @@ module DeviceOnNetwork
         .compact
     end
 
-    def find_mac mac_address
-      mac = tidy_mac(mac_address)
-      scan = Nmap::XML.new(@scan_file)
-      scan.hosts
-        .select{|host| host.mac == mac}
-        .select{|host| host.status.state == :up}
-    end
-
-    private
-
     def tidy_mac mac
       mac.upcase
         .gsub(':','')
