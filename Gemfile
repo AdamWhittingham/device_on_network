@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'ruby-nmap'
 gem 'rack'
-gem 'sinatra'
+gem 'sinatra', require: false
 
 group :test, :development do
   gem 'aruba-rspec'
