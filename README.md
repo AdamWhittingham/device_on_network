@@ -16,22 +16,17 @@ Usage
 ### Start her up!
 `sudo bin/device_on_network`
 
+You can optionally set various settings. Run `bin/device_on_network -h` to see the options.
+
+**Note:** By default, nmap will be writing it's scan results to `/var/tmp`. This will be readable by anyone on your server, so you may want to supply the option to store this file in a more secure location (depending on who you share your server with).
+
 ### Routes
 
-`GET /` => Return a timestamp and message so you know the server is up
-
-#### Active
-  `GET /active` => Return an object describing the active (up) MAC addresses
+#### '/'
+  `GET /` => Return a JSON object listing the active (up) MAC addresses
 ##### Response JSON keys
-- `macs` => An array of strings representing all of the active macs
-- `timestamp` => The UTC timestamp of the last scan
-
-#### Find
-`GET /find?mac=00:00:00:00:00:00` => Returns a JSON object describing the results of scanning for the given MAC
-##### Response JSON keys
-- `found` => 'true' or 'false' depending on if that mac was found
-- `mac` => the mac you requested a lookup of
-- `timestamp` => The UTC timestamp of the last scan
+- `active_mac_addresses` => An array of strings representing all of the active macs
+- `scanned_at` => The UTC timestamp of the last scan being completed
 
 
 Rambling notes on what I learned building this
@@ -44,3 +39,4 @@ Here are a few notes of what I've learned, please get in touch if you have some 
   1. I used the excellent `Program::Nmap` gem to isolate, parse and adapt NAMP searches into nice objects. As this gem returns its own data types, this left me with no clear option between stubbing the library (risking stubbing the wrong interfaces), closely integrating with the library and stubbing the system calls to namp (which I chose) and abandoning testing (which would be lazy and teach me nothing). Lesson: using a gem which returns its own data types means you need to absorb it's juicy knowledge to be able to test your app well, so it may not always be the awesome win you expected.
   2. Having to split the app in two in order to split the privileges added some interesting problems. Should the scanner just be a shell script calling namp and run as root? Could I automatically integration test the app without causing havoc to gem installations? (current answer is 'no')
   3. Testing a small script which spins up a thread without mocking/instrumenting `Thread` was very tough and not very useful. Ultimately, I ditched the tests as they were fragile mirrors of the production code. An integration test on a simulated network is too heavy handed for this, but may be sensible if this were a real production job. Refactoring the scanner into a ScannerLooper class is probably a good idea too.
+- Sinatra _can_ run dynamically generated classes but the resulting code is so unobvious that I ended up using global and class level variables as the less of two evils. There is plenty of scope for refactoring the server component into something which can be initialized with config variables.

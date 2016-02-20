@@ -12,6 +12,7 @@ module DeviceOnNetwork
     end
 
     def scan
+      puts 'Scanning'
       temp_file = Tempfile.new('DeviceOnNetwork')
       Nmap::Program.scan do |scan|
         scan.targets = @network_targets
