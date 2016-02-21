@@ -13,10 +13,9 @@ PORT=12001
 
 # Probably don't edit these
 APP="device_on_network"
-BUNDLE="bundle"
 PID_GREP="ruby .*$APP"
-START_CMD="$BUNDLE exec bin/device_on_network -p $PORT"
-CMD="cd ${APP_DIR}; ${START_CMD} >> ${LOG_FILE} 2>&1 &"
+START_CMD="bundle exec bin/device_on_network -p $PORT"
+CMD="bash -lc 'cd ${APP_DIR}; ${START_CMD} >> ${LOG_FILE} 2>&1 &'"
 
 RETVAL=0
 
