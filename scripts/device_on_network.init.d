@@ -19,12 +19,16 @@ CMD="bash -lc 'cd ${APP_DIR}; ${START_CMD} >> ${LOG_FILE} 2>&1 &'"
 
 RETVAL=0
 
+if [ `id -u` != '0' ]; then
+  echo "$APP can only be controlled by root"
+  exit 2
+fi
+
 start() {
   status
   if [ $? -eq 1 ]; then
 
-    [ `id -u` == '0' ] || (echo "$APP runs as root only .."; exit 2)
-    [ -d $APP_DIR ] || (echo "$APP_DIR not found!.. Exiting"; exit 3)
+    [ -d $APP_DIR ] || (echo "$APP_DIR not found, Exiting"; exit 3)
 
     cd $APP_DIR
     echo "Starting $APP..."
@@ -64,7 +68,7 @@ case "$1" in
   status)
     status
     if [ $? -eq 0 ]; then
-      echo "$APP is running (PID: ${pid})"
+      echo "$APP is running (PID: $(pid))"
       RETVAL=0
     else
       echo "$APP is not running"
