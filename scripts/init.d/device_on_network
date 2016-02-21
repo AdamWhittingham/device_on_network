@@ -6,16 +6,18 @@
 # Description: Starts and Stops device_on_network: network scanner with API server
 
 # Edit these
-AS_USER="root"
 APP_DIR="/opt/device_on_network"
 LOG_FILE="/var/log/device_on_network"
 PORT=12001
-BIND="192.168.0.1"
+BIND="localhost"
+SCAN_NET="192.168.0.*"
+SCAN_EVERY="15"
 
 # Probably don't edit these
 APP="device_on_network"
 PID_GREP="ruby .*$APP"
-START_CMD="bundle exec bin/device_on_network -p$PORT -b$BIND"
+AS_USER="root"
+START_CMD="bundle exec bin/device_on_network -p$PORT -b$BIND -n$SCAN_NET -s$SCAN_EVERY"
 CMD="bash -lc 'cd ${APP_DIR}; ${START_CMD} >> ${LOG_FILE} 2>&1 &'"
 
 RETVAL=0
