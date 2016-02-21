@@ -24,13 +24,12 @@ start() {
   status
   if [ $? -eq 1 ]; then
 
-    [ `id -u` == '0' ] || (echo "$APP runs as root only .."; exit 5)
-    [ -d $APP_DIR ] || (echo "$APP_DIR not found!.. Exiting"; exit 6)
+    [ `id -u` == '0' ] || (echo "$APP runs as root only .."; exit 2)
+    [ -d $APP_DIR ] || (echo "$APP_DIR not found!.. Exiting"; exit 3)
+
     cd $APP_DIR
     echo "Starting $APP..."
-
     su -c "$CMD" - $AS_USER
-
     RETVAL=$?
     return $RETVAL
   else
@@ -39,12 +38,12 @@ start() {
 }
 
 stop() {
-    echo "Stopping $APP"
-    SIG="INT"
-    kill -$SIG pid
-    RETVAL=$?
-    [ $RETVAL -eq 0 ] && rm -f $LOCK_FILE
-    return $RETVAL
+  echo "Stopping $APP"
+  SIG="INT"
+  kill -$SIG $(pid)
+  RETVAL=$?
+  [ $RETVAL -eq 0 ] && rm -f $LOCK_FILE
+  return $RETVAL
 }
 
 status() {
@@ -53,30 +52,29 @@ status() {
 }
 
 pid() {
-  echo "$(ps -A -o pid,cmd | grep 'ruby .*$APP' | grep -v grep | awk '{print $1}')"
+  ps -e -o pid,cmd | grep "$PID_GREP" | grep -v grep | awk '{print $1}'
 }
 
-
 case "$1" in
-    start)
-        start
-        ;;
-    stop)
-        stop
-        ;;
-    status)
-        status
-        if [ $? -eq 0 ]; then
-             echo "$APP is running (PID: ${pid})"
-             RETVAL=0
-         else
-             echo "$APP is not running"
-             RETVAL=1
-         fi
-        ;;
-    *)
-        echo "Usage: $0 {start|stop|status}"
-        exit 0
-        ;;
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  status)
+    status
+    if [ $? -eq 0 ]; then
+      echo "$APP is running (PID: ${pid})"
+      RETVAL=0
+    else
+      echo "$APP is not running"
+      RETVAL=1
+    fi
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|status}"
+    exit 0
+    ;;
 esac
 exit $RETVAL
