@@ -10,11 +10,12 @@ AS_USER="root"
 APP_DIR="/opt/device_on_network"
 LOG_FILE="/var/log/device_on_network"
 PORT=12001
+BIND="192.168.0.1"
 
 # Probably don't edit these
 APP="device_on_network"
 PID_GREP="ruby .*$APP"
-START_CMD="bundle exec bin/device_on_network -p $PORT"
+START_CMD="bundle exec bin/device_on_network -p$PORT -b$BIND"
 CMD="bash -lc 'cd ${APP_DIR}; ${START_CMD} >> ${LOG_FILE} 2>&1 &'"
 
 RETVAL=0
