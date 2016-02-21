@@ -11,6 +11,8 @@ It also needs to be run in a process with root privileges to detect MAC addresse
 
 You probably don't want to have to run your whole app as sudo, so this project provides a JSON API server to let you isolate the high privileges.
 
+There is also a `init.d` script provided for convenience inside the `scripts` folder. It only assumes that your root user has `ruby` on the path by default, so you may need to make some changes depending on your setup.
+
 Usage
 -----
 ### Start her up!
