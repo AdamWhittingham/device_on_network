@@ -16,6 +16,9 @@ OptionParser.new do |opts|
   opts.on_tail("-h",   "--help",    "Show this message")                                                                                                { puts opts; exit }
 end.parse!
 
+raise 'DeviceOnNetwork must be run as root to be able to scan the network' unless Process.uid == 0
+raise 'Nmap must be installed and available on the PATH to scan the network' unless system("which nmap")
+
 $port           = options[:port]         || 12001
 $bind           = options[:interface]    || 'localhost'
 $scan_file      = options[:scan_file]    || '/var/tmp/scanner.xml'
