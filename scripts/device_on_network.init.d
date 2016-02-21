@@ -46,7 +46,7 @@ stop() {
 }
 
 status() {
-  ps -ef | grep "$PID_GREP" | grep -v grep
+  ps -ef | grep "$PID_GREP" | grep -v grep >/dev/null
   return $?
 }
 
