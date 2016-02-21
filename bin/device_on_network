@@ -17,7 +17,7 @@ OptionParser.new do |opts|
 end.parse!
 
 raise 'DeviceOnNetwork must be run as root to be able to scan the network' unless Process.uid == 0
-raise 'Nmap must be installed and available on the PATH to scan the network' unless system("which nmap")
+raise 'Nmap must be installed and available on the PATH to scan the network' unless system("which nmap >/dev/null")
 
 $port           = options[:port]         || 12001
 $bind           = options[:interface]    || 'localhost'
