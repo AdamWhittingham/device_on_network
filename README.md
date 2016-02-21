@@ -11,7 +11,7 @@ Installation
 DeviceOnNetwork requires [nmap](http://nmap.org/) to be installed.
 It also needs to be run in a process with root privileges to detect MAC addresses.
 
-Just clone this repo, run `bundle install` to install the dependencies, and you should be good to go.
+Just clone this repo, run `bundle install --without test development` to install the dependencies, and you should be good to go.
 
 ### Running as a service (Init.d)
 There is also a `init.d` script provided for convenience inside the `scripts` folder. It only assumes that your root user has `ruby` on the path by default, so you may need to make some changes depending on your setup.
