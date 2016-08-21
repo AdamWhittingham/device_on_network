@@ -28,8 +28,8 @@ You can optionally set various settings like the scan period and target network.
 #### '/'
   `GET /` => Return a JSON object listing the active (up) MAC addresses
 ##### Response JSON keys
-- `active_mac_addresses` => An array of strings representing all of the active macs
 - `scanned_at` => The UTC timestamp of the last scan being completed
+- `active` => An array of strings representing all of the active macs. If `--show-ips` was used, this is an array of objects with `ip` and `mac` as keys.
 
 HELP!
 -----

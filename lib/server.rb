@@ -13,6 +13,9 @@ module DeviceOnNetwork
     puts "Started API server"
     puts " - Server port: #{$port}"
     puts " - Server bind: #{$bind}"
+    if $show_ips
+      puts " - Show IPs: ENABLED"
+    end
 
     @@parser  = DeviceOnNetwork::Parser.new($scan_file)
     @@scanner = DeviceOnNetwork::Scanner.new($scan_file, $network_target)
@@ -24,9 +27,9 @@ module DeviceOnNetwork
 
     get '/' do
       return '{}' unless File.exists?($scan_file)
-      active_macs = @@parser.active_macs
+      active = $show_ips ? @@parser.active_macs_and_ip : @@parser.active_macs
       timestamp = File.mtime($scan_file).utc
-      JSON.generate({ active_mac_addresses: active_macs, scanned_at: timestamp })
+      JSON.generate({ active: active, scanned_at: timestamp })
     end
 
     Server.run!

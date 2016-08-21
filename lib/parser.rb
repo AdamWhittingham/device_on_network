@@ -8,11 +8,16 @@ module DeviceOnNetwork
     end
 
     def active_macs
-      scan = Nmap::XML.new(@scan_file)
       scan.hosts
         .select{|host| host.status.state == :up}
         .map(&:mac)
         .compact
+    end
+
+    def active_macs_and_ip
+      scan.hosts
+        .select{|host| host.status.state == :up}
+        .map{|host| {ip: host.ip, mac: host.mac} }
     end
 
     def tidy_mac mac
@@ -22,6 +27,10 @@ module DeviceOnNetwork
         .each_slice(2)
         .map(&:join)
         .join(':')
+    end
+
+    private def scan
+      Nmap::XML.new(@scan_file)
     end
 
   end

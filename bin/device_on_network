@@ -8,12 +8,13 @@ options = {}
 OptionParser.new do |opts|
   opts.banner = "DeviceOnNetwork\nA little Nmap => JSON API tool for listing active MAC addresses.\nUsage: #{$0} [options]"
 
-  opts.on("-pPORT",    "--port=PORT", "Port for the API to be served on.                                              (Default: 12001)")                { |val| options[:port] = Integer(val) }
-  opts.on("-bBIND",    "--bind=BIND", "Hostname or IP for the API to bind to. Use '0.0.0.0' for access from anywhere. (Default: localhost)")            { |val| options[:interface] = val }
-  opts.on("-sSEC",     "--scan-every=SEC", "Seconds beteween scans.                                                   (Default: 30)")                   { |val| options[:scan_period] = Integer(val) }
-  opts.on("-fPATH",    "--scan-file=FILE",   "Nmap results file. Default is world readable!                           (Default: /var/tmp/scanner.xml)") { |val| options[:scan_file] = val }
-  opts.on("-nNETWORK", "--scan-network=NETWORK", "IP range to scan. More takes longer!                                (Default: '192.168.0.*'")         { |val| options[:scan_network] = val }
-  opts.on_tail("-h",   "--help",    "Show this message")                                                                                                { puts opts; exit }
+  opts.on("-pPORT",    "--port=PORT",            "Port for the API to be served on.                                  (Default: 12001)")                { |val| options[:port] = Integer(val) }
+  opts.on("-bBIND",    "--bind=BIND",            "Hostname or IP for the API to bind to. Use '0.0.0.0' for anywhere. (Default: localhost)")            { |val| options[:interface] = val }
+  opts.on("-sSEC",     "--scan-every=SEC",       "Seconds beteween scans.                                            (Default: 30)")                   { |val| options[:scan_period] = Integer(val) }
+  opts.on("-fPATH",    "--scan-file=FILE",       "Nmap results file. Careful, the default is world readable!         (Default: /var/tmp/scanner.xml)") { |val| options[:scan_file] = val }
+  opts.on("-nNETWORK", "--scan-network=NETWORK", "IP range to scan. More takes longer!                               (Default: '192.168.0.*'")         { |val| options[:scan_network] = val }
+  opts.on("-i",        "--show-ips",             "Show IP addresses along with MAC addresses. Be careful!            (Default: false")                 { |val| options[:show_ips] = true }
+  opts.on_tail("-h",   "--help",                 "Show this message")                                                                                  { puts opts; exit }
 end.parse!
 
 raise 'DeviceOnNetwork must be run as root to be able to scan the network' unless Process.uid == 0
@@ -24,5 +25,6 @@ $bind           = options[:interface]    || 'localhost'
 $scan_file      = options[:scan_file]    || '/var/tmp/scanner.xml'
 $scan_period    = options[:scan_period]  || 30
 $network_target = options[:scan_network] || '192.168.0.*'
+$show_ips       = options[:show_ips]     || false
 
 require_relative '../lib/server.rb'
